@@ -1,20 +1,14 @@
 import React, { Component } from "react";
 import { Layout, Menu } from "antd";
-// import {
-//   HomeOutlined,
-//   SettingOutlined,
-//   AppstoreAddOutlined,
-//   TeamOutlined,
-//   ShoppingOutlined,
-// } from "@ant-design/icons";
 import * as Icon from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import menuList from "../../config/menuConfig";
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-export default class LeftNav extends Component {
-  menuNodes = (menuList) => {
+class LeftNav extends Component {
+  getMenuNodes = (menuList) => {
+    const { pathname } = this.props.location;
     return menuList.map((item) => {
       // antd4.0动态加载icon
       const icon = React.createElement(Icon[item.icon], {
@@ -30,6 +24,9 @@ export default class LeftNav extends Component {
           </Menu.Item>
         );
       } else {
+        if (item.children.find((ctem) => ctem.key === pathname)) {
+          this.openKey = item.key;
+        }
         return (
           <SubMenu key={item.key} icon={icon} title={item.title}>
             {item.children.map((ctem) => {
@@ -47,27 +44,27 @@ export default class LeftNav extends Component {
       }
     });
   };
+
+  UNSAFE_componentWillMount() {
+    this.menuNodes = this.getMenuNodes(menuList);
+  }
   render() {
+    const { pathname } = this.props.location;
+    const { openKey } = this;
+    console.info("this.openKey", this.openKey);
     return (
       <Sider collapsible>
         <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-          {this.menuNodes(menuList)}
-          {/* <Menu.Item key="1" icon={<HomeOutlined />}>
-            <Link to="/home">首页</Link>
-          </Menu.Item>
-          <SubMenu key="sub1" icon={<AppstoreAddOutlined />} title="商品管理">
-            <Menu.Item key="2" icon={<ShoppingOutlined />}>
-              <Link to="/category">商品分类</Link>
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub2" icon={<SettingOutlined />} title="系统设置">
-            <Menu.Item key="4" icon={<TeamOutlined />}>
-              <Link to="user">系统用户</Link>
-            </Menu.Item>
-          </SubMenu> */}
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[pathname]}
+          defaultOpenKeys={[openKey]}
+        >
+          {this.menuNodes}
         </Menu>
       </Sider>
     );
   }
 }
+export default withRouter(LeftNav);

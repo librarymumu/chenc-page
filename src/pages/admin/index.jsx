@@ -7,6 +7,7 @@ import Header from "../../component/header";
 import Home from "../home";
 import User from "../user";
 import Category from "../category";
+import Role from "../role";
 import "./index.less";
 
 const { Content, Footer } = Layout;
@@ -38,7 +39,8 @@ export default class Admin extends Component {
             <Switch>
               <Route path="/home" component={Home}></Route>
               <Route path="/user" component={User}></Route>
-              <Route path="/Category" component={Category}></Route>
+              <Route path="/category" component={Category}></Route>
+              <Route path="/role" component={Role}></Route>
               <Redirect to="/home"></Redirect>
             </Switch>
           </Content>

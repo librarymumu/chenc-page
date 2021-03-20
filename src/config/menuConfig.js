@@ -5,7 +5,7 @@
 const menuList = [
   {
     title: "首页", // 菜单标题名称
-    key: "1",
+    key: "/home",
     path: "/home", // 对应的 path
     icon: "HomeOutlined", // 图标名称
   },
@@ -17,7 +17,7 @@ const menuList = [
       // 子菜单列表
       {
         title: "分类管理",
-        key: "2",
+        key: "/category",
         path: "/category",
         icon: "ShoppingOutlined",
       },
@@ -31,8 +31,14 @@ const menuList = [
       // 子菜单列表
       {
         title: "系统用户",
-        key: "3",
+        key: "/user",
         path: "/user",
+        icon: "TeamOutlined",
+      },
+      {
+        title: "权限管理",
+        key: "/role",
+        path: "/role",
         icon: "TeamOutlined",
       },
     ],
