@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import { formateDate } from "../../utils/dateUtils";
 import { removeUser } from "../../utils/storageUtils";
 import { saveUserToRam } from "../../utils/memoryUtils";
+import menuList from "../../config/menuConfig";
 import { Modal } from "antd";
 import "./index.less";
 
@@ -46,8 +47,28 @@ class Header extends Component {
     });
   };
 
+  // 获取当前路径名称
+  getTitle = (pathname) => {
+    let title;
+    menuList.forEach((menu) => {
+      if (menu.path === pathname) {
+        title = menu.title;
+      } else if (menu.children) {
+        menu.children.forEach((mcitem) => {
+          if (mcitem.path === pathname) {
+            title = mcitem.title;
+          }
+        });
+      }
+    });
+    return title;
+  };
+
   render() {
     const { username } = saveUserToRam.user;
+    // 得到当前请求路基
+    const { pathname } = this.props.location;
+    const title = this.getTitle(pathname);
     return (
       <div className="header" style={{ padding: 0 }}>
         <div className="header-top">
@@ -57,7 +78,7 @@ class Header extends Component {
           </button>
         </div>
         <div className="header-bottom">
-          <div className="header-bottom-left">首页</div>
+          <div className="header-bottom-left">{title}</div>
           <div className="header-bottom-right">
             <span>{this.state.sysTime}</span>
           </div>
